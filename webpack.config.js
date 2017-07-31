@@ -5,16 +5,14 @@ var DEV = path.resolve(__dirname, "dev");
 var OUTPUT = path.resolve(__dirname, "output");
 
 var config = {
-  entry: {
-    pageA: DEV + "/index.jsx",
-    pageB: DEV + "/movieDetails.jsx"
-  },
+  entry: DEV + "/index.jsx",
   output: {
     path: OUTPUT,
-    filename: "[name].myCode.js"
+    filename: "bundle.js"
   },
   module: {
   loaders: [{
+	  test : /\.jsx?/,
       include: DEV,
       loader: "babel-loader",
   }]
