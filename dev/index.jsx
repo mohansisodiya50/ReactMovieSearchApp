@@ -42,7 +42,7 @@ class Search extends Component {
   movieDetails(value) {
     var url = 'https://api.themoviedb.org/3/movie/' + parseInt(value) + '?api_key=989def4a1b101991db8e783b73ee7bd0&language=en-US';
 
-    jQuery("#mm").html("");
+    //jQuery("#mm").html("");
       var enteredMovie = value, results;
 
       fetch(url)
