@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import _ from 'lodash';
 import Autosuggest from 'react-autosuggest';
-import HelloWorld from './movieDetails.jsx';
+import MovieDetails from './movieDetails.jsx';
 
 class Search extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { data:'',  showResults: false, total_results: 0, releaseDate: '', id: '', list: '', term: '', sendMovieQuery: _.debounce((value) => {this.getMovie(value)}, 100)};
-    this.getMovie = this.getMovie.bind(this);
+    this.state = { data:'', showResults: false, total_results: 0, id: '', term: '' };
+    this.getMovieList = this.getMovieList.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -27,8 +27,9 @@ class Search extends Component {
     }
   }
 
-  getMovie(value) {
+  getMovieList(value) {
     var url = 'https://api.themoviedb.org/3/search/movie?query=' + value + '&api_key=989def4a1b101991db8e783b73ee7bd0';
+
       fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -39,11 +40,9 @@ class Search extends Component {
     })
   }
 
-  movieDetails(value) {
-    var url = 'https://api.themoviedb.org/3/movie/' + parseInt(value) + '?api_key=989def4a1b101991db8e783b73ee7bd0&language=en-US';
-
-    //jQuery("#mm").html("");
-      var enteredMovie = value, results;
+  getmovieDetails(value) {
+    var url = 'https://api.themoviedb.org/3/movie/' + parseInt(value) + '?api_key=989def4a1b101991db8e783b73ee7bd0&language=en-US',
+      enteredMovie = value, results;
 
       fetch(url)
       .then((resp) => resp.json())
@@ -55,36 +54,35 @@ class Search extends Component {
           vote_average: responseJson.vote_average,
           poster_path: responseJson.poster_path,
           runtime: responseJson.runtime,
-          revenue: responseJson.revenue,
-          repeatTitle: responseJson.title
+          revenue: responseJson.revenue
         });
       });
   this.setState({ showResults: false });
   }
 
   componentDidMount() {
-    this.movieDetails(278927);
+    this.getmovieDetails(278927);
   }
 
   onInputChange(value) {
     if(value.length > 0 && this.state.total_results > 0) {
       this.setState({ showResults: true });
     } else {
-    this.setState({ showResults: false });
+      this.setState({ showResults: false });
     }
     this.setState({ term: value });
-    this.getMovie(value);
+    this.getMovieList(value);
   }
 
   onItemClick(value, id) {
     this.setState({ term: value, id: id});
-    this.movieDetails(id);
+    this.getmovieDetails(id);
   }
 
   render() {
-    var term = this.state.term, self = this;
+    var term = this.state.term, self = this, movieList;
 
-    var movieList =  _.map(this.state.data, function(obj) {
+    movieList =  _.map(this.state.data, function(obj) {
       if(_.includes(obj.title.toLowerCase(), term.toLowerCase().trim())) {
         return (<li className="suggestions" key={obj.id} id={obj.id} onClick={event => self.onItemClick(obj.title, obj.id)}>{obj.title}</li>);
       }
@@ -96,7 +94,7 @@ class Search extends Component {
           <input className="movieInput" placeholder="Search Movie..."  value={this.state.term} id={this.state.id} onInput={event => this.onInputChange(event.target.value)} />
           {self.state.showResults ? <ul className="suggestionDropDown">{movieList}</ul> : "" }
         </div>
-          <HelloWorld data={this.state}/>
+          <MovieDetails data={this.state}/>
       </div>
     );
   }
