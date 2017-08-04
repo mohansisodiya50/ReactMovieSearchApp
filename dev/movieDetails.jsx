@@ -3,12 +3,37 @@ import ReactDOM from "react-dom";
 import numeral  from "numeral";
 
 class MovieDetails extends Component{
-	componentWillMount() {
-	  document.addEventListener('click', this.handleClick, false);
-	}
 
-	componentWillUnmount() {
-	  document.removeEventListener('click', this.handleClick, false);
+	  constructor(props) {
+	    super(props);
+	    this.state = { data:'', showResults: false, total_results: 0};
+	    this.getmovieDetails = this.getmovieDetails.bind(this);
+			this.getmovieDetails(278927);
+	  }
+
+		componentWillReceiveProps(nextProps) {
+			if(nextProps.movieId !== '') {
+				this.getmovieDetails(nextProps.movieId);
+			}
+		}
+
+	getmovieDetails(value) {
+		var url = 'https://api.themoviedb.org/3/movie/' + parseInt(value) + '?api_key=989def4a1b101991db8e783b73ee7bd0&language=en-US',
+			enteredMovie = value, results;
+
+		fetch(url)
+		.then((resp) => resp.json())
+		.then((responseJson) => {
+			this.setState({
+			  title: responseJson.title,
+			  overview: responseJson.overview,
+			  release_date: responseJson.release_date,
+			  vote_average: responseJson.vote_average,
+			  poster_path: responseJson.poster_path,
+			  runtime: responseJson.runtime,
+			  revenue: responseJson.revenue
+			});
+		});
 	}
 
 	validations(value) {
@@ -18,10 +43,10 @@ class MovieDetails extends Component{
 			return value;
 		}
 	}
-	
+
     render() {
-		let posterIMG = 'https://image.tmdb.org/t/p/w342' + this.props.data.poster_path,
-			data = this.props.data;
+		let posterIMG = 'https://image.tmdb.org/t/p/w342' + this.state.poster_path,
+			data = this.state;
 
 		data.revenue = this.validations(data.revenue);
 		data.release_date = this.validations(data.release_date);
@@ -31,7 +56,6 @@ class MovieDetails extends Component{
 		if(data.revenue !== '--') {
 			data.revenue = numeral(data.revenue).format('($0,0)');
 		}
-
 		if(data.poster_path === undefined || data.poster_path === null) {
 			posterIMG = './No_Photo_Available.png';
 		}
@@ -40,8 +64,8 @@ class MovieDetails extends Component{
 			<div className="detailsContainer">
 				<img id="postertest" className='poster' src={posterIMG}/>
 				<div className="detailsInfo">
-					<h1>{this.props.data.title}</h1>
-					<div className="movieOverview">{this.props.data.overview}</div>
+					<h1>{data.title}</h1>
+					<div className="movieOverview">{data.overview}</div>
 					<div className="detailsDiv">Release date: <span>{data.release_date}</span></div>
 					<div className="detailsDiv">Running Time: <span>{data.runtime}</span></div>
 					<div className="detailsDiv">Vote Average: <span>{data.vote_average}</span></div>
@@ -51,5 +75,4 @@ class MovieDetails extends Component{
 		)
     }
 }
-
 export default MovieDetails

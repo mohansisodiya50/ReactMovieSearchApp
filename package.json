@@ -23,5 +23,8 @@
       "es2015",
       "react"
     ]
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^2.6.1"
   }
 }
