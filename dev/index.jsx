@@ -4,25 +4,24 @@ import _ from 'lodash';
 import MovieDetails from './movieDetails.jsx';
 import MovieSuggestions from './movieSuggestions.jsx';
 
-class Search extends Component {
+class Index extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       movieId: '',
-  		movieTitle: '',
+      movieTitle: '',
       suggestionsVisisble: true
-  	};
+    };
     this.handleSuggestionSelected = this.handleSuggestionSelected.bind(this);
   }
 
   handleSuggestionSelected(ev) {
-     this.setState({
-       movieId: ev.target.id,
-       suggestionsVisisble: false,
-       movieTitle: ev.target.textContent,
-       suggestionsVisisble: false
-     });
+    this.setState({
+      movieId: ev.target.id,
+      suggestionsVisisble: false,
+      movieTitle: ev.target.textContent,
+    });
   }
 
   onInputChange(value) {
@@ -35,16 +34,11 @@ class Search extends Component {
         <div  className="searchBar">
           <input className="movieInput" placeholder="Search Movie..."  value={this.state.movieTitle} onInput={event => this.onInputChange(event.target.value)} />
         </div>
-          <MovieSuggestions suggestionsVisisble={this.state.suggestionsVisisble} suggestionSelected={this.handleSuggestionSelected} movieTitle={ this.state.movieTitle }/>
-          <MovieDetails movieTitle={ this.state.movieTitle } movieId={this.state.movieId }/>
+        <MovieSuggestions suggestionsVisisble={this.state.suggestionsVisisble} suggestionSelected={this.handleSuggestionSelected} movieTitle={ this.state.movieTitle }/>
+        <MovieDetails movieId={this.state.movieId }/>
       </div>
     );
   }
 }
 
-ReactDOM.render(
-  <div>
-    <Search />
-  </div>,
-  document.querySelector("#container")
-);
+export default Index

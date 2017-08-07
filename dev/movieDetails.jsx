@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import numeral  from "numeral";
 
-class MovieDetails extends Component{
+class MovieDetails extends Component {
 
-	  constructor(props) {
-	    super(props);
-	    this.state = { data:'', showResults: false, total_results: 0};
-	    this.getmovieDetails = this.getmovieDetails.bind(this);
-			this.getmovieDetails(278927);
-	  }
+	constructor(props) {
+		super(props);
+		this.state = { data:''};
+		this.getmovieDetails = this.getmovieDetails.bind(this);
+		this.getmovieDetails(278927);
+	}
 
-		componentWillReceiveProps(nextProps) {
-			if(nextProps.movieId !== '') {
-				this.getmovieDetails(nextProps.movieId);
-			}
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.movieId !== '') {
+			this.getmovieDetails(nextProps.movieId);
 		}
+	}
 
 	getmovieDetails(value) {
 		var url = 'https://api.themoviedb.org/3/movie/' + parseInt(value) + '?api_key=989def4a1b101991db8e783b73ee7bd0&language=en-US',
@@ -25,13 +25,13 @@ class MovieDetails extends Component{
 		.then((resp) => resp.json())
 		.then((responseJson) => {
 			this.setState({
-			  title: responseJson.title,
-			  overview: responseJson.overview,
-			  release_date: responseJson.release_date,
-			  vote_average: responseJson.vote_average,
-			  poster_path: responseJson.poster_path,
-			  runtime: responseJson.runtime,
-			  revenue: responseJson.revenue
+				title: responseJson.title,
+				overview: responseJson.overview,
+				release_date: responseJson.release_date,
+				vote_average: responseJson.vote_average,
+				poster_path: responseJson.poster_path,
+				runtime: responseJson.runtime,
+				revenue: responseJson.revenue
 			});
 		});
 	}
@@ -44,7 +44,7 @@ class MovieDetails extends Component{
 		}
 	}
 
-    render() {
+	render() {
 		let posterIMG = 'https://image.tmdb.org/t/p/w342' + this.state.poster_path,
 			data = this.state;
 
@@ -56,8 +56,9 @@ class MovieDetails extends Component{
 		if(data.revenue !== '--') {
 			data.revenue = numeral(data.revenue).format('($0,0)');
 		}
+
 		if(data.poster_path === undefined || data.poster_path === null) {
-			posterIMG = './No_Photo_Available.png';
+			posterIMG = 'images/No_Photo_Available.png';
 		}
 
 		return (
@@ -73,6 +74,6 @@ class MovieDetails extends Component{
 				</div>
 			</div>
 		)
-    }
+	}
 }
 export default MovieDetails

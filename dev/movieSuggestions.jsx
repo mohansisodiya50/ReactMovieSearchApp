@@ -3,19 +3,19 @@ import ReactDOM from "react-dom";
 import numeral  from "numeral";
 import MovieDetails from './movieDetails.jsx';
 
-
 class MovieSuggestions extends Component {
+
 	constructor(props) {
-  	super(props);
+		super(props);
 		this.handleClick = this.handleClick.bind(this);
-    this.state = {
+		this.state = {
 			data:'',
 			showResults: false,
 			total_results: '',
 			id: '',
 			movieTitle: this.props.movieTitle
 		};
-  }
+	}
 
   componentWillMount() {
   	document.addEventListener('click', this.handleClick, false);
@@ -33,23 +33,25 @@ class MovieSuggestions extends Component {
       this.setState({ showResults: false });
     }
 	}
-	  handleClick(e) {
-	    if(e.target.nodeName !== "INPUT") {
-	      this.setState({ showResults: false });
-	    }
-  }
 
-  getMovieList(value) {
-  	var url = 'https://api.themoviedb.org/3/search/movie?query=' + value + '&api_key=989def4a1b101991db8e783b73ee7bd0';
-      fetch(url)
-	      .then((response) => response.json())
-	      .then((responseJson) => {
-	          if(responseJson.total_results == 0) {
-	            this.setState({ showResults: false, total_results: responseJson.total_results });
-	          }
-						this.setState({data: responseJson.results, total_results: responseJson.total_results });
-    })
-  }
+	handleClick(e) {
+		if(e.target.nodeName !== "INPUT") {
+			this.setState({ showResults: false });
+		}
+	}
+
+	getMovieList(value) {
+		var url = 'https://api.themoviedb.org/3/search/movie?query=' + value + '&api_key=989def4a1b101991db8e783b73ee7bd0';
+
+		fetch(url)
+		.then((response) => response.json())
+		.then((responseJson) => {
+			if(responseJson.total_results == 0) {
+				this.setState({ showResults: false, total_results: responseJson.total_results });
+			}
+		this.setState({data: responseJson.results, total_results: responseJson.total_results });
+		})
+	}
 
   onItemClick(value, id) {
     this.setState({ movieTitle: value, id: id, showResults: false});
@@ -68,7 +70,6 @@ class MovieSuggestions extends Component {
 			<div className="">
 				{self.state.showResults ? <ul className="suggestionDropDown">{movieList}</ul> : "" }
 			</div>
-
 		)
     }
 }
