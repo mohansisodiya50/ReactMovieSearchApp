@@ -26,7 +26,9 @@ class MovieSuggestions extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-		this.getMovieList(nextProps.movieTitle);
+		if(nextProps.movieTitle !== '') {
+			this.getMovieList(nextProps.movieTitle);
+		}
 		if(nextProps.movieTitle.length > 0 && this.state.total_results > 0 && nextProps.suggestionsVisisble) {
       this.setState({ showResults: true });
     } else {

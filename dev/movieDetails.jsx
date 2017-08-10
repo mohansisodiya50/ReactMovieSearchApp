@@ -6,13 +6,16 @@ class MovieDetails extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { data:''};
+		this.state = { data:'' };
 		this.getmovieDetails = this.getmovieDetails.bind(this);
-		this.getmovieDetails(278927);
+	}
+
+	componentWillMount() {
+			this.getmovieDetails(this.props.movieId);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.movieId !== '') {
+		if(nextProps.movieId !== '' && nextProps.getDetails) {
 			this.getmovieDetails(nextProps.movieId);
 		}
 	}
