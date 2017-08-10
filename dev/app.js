@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
-import Search from './index.jsx';
-
+import Search from './search.jsx';
 
 ReactDOM.render(
   <div>
