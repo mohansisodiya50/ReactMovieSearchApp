@@ -37,7 +37,7 @@ class Search extends Component {
           <input className="movieInput" placeholder="Search Movie..."  value={this.state.movieTitle} onInput={event => this.onInputChange(event.target.value)} />
         </div>
         <MovieSuggestions suggestionsVisisble={this.state.suggestionsVisisble} suggestionSelected={this.handleSuggestionSelected} movieTitle={ this.state.movieTitle }/>
-        <MovieDetails getDetails={ this.state.getDetails }movieId={ this.state.movieId }/>
+        <MovieDetails getDetails={ this.state.getDetails } movieId={ this.state.movieId }/>
       </div>
     );
   }
